@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rhino-autoregression"
+version = "0.1.0"
+description = "Image/Video AI Tools"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+]
+
+[project.optional-dependencies]
+rhautoregression = [
+    # rhino dependency
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["rhautoregression"]  
