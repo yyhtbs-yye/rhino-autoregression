@@ -24,7 +24,7 @@ class PixelCNNPlusPlus(nn.Module):
         nr_mix=10,
     ):
         super().__init__()
-        self.C = in_channels
+        self.in_channels = in_channels
         self.HC = hidden_channels
         self.kernel_size = kernel_size
         self.p_drop = float(dropout)
@@ -32,8 +32,8 @@ class PixelCNNPlusPlus(nn.Module):
         # Mixture components used by the DMOL head (change if desired)
         self.nr_mix = nr_mix
 
-        self.backbone = PixelCNNPPBackbone(in_channels, hidden_channels=120,
-                                           n_blocks=6, kernel_size=3, dropout=0.0)
+        self.backbone = PixelCNNPPBackbone(in_channels, hidden_channels=hidden_channels,
+                                           n_blocks=n_blocks, kernel_size=kernel_size, dropout=dropout)
 
         # Output head: sum of skips -> DMOL params
         out_channels = get_n_out_channels_for_dmol(in_channels, self.nr_mix)

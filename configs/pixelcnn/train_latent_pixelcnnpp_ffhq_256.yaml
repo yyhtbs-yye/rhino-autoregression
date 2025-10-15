@@ -1,0 +1,46 @@
+_import: configs/train_base_ar_float.yaml
+
+boat:
+  path: 'rhautoregression.boats.latent_autoregression_boat'
+  name: 'LatentAutoregressionBoat'
+
+  models:
+    net:
+      path: 'rhautoregression.nn.model_zoo.pixelcnnpp'
+      name: 'PixelCNNPlusPlus'
+      params:
+        kernel_size: $kernel_size
+        in_channels: $in_channels
+        hidden_channels: $hidden_channels
+        n_blocks: $n_blocks
+        nr_mix: $nr_mix
+
+    latent_encoder:
+      path: 'rhcompression.nn.wrappers.autoencoder_kl_wrapper'   # Path to import the model class
+      name: 'AutoencoderKLWrapper'              # Name of the model class to use
+      pretrained: 'stabilityai/sd-vae-ft-mse'  # Example: A common pretrained VAE from Stable Diffusion
+
+_vars:
+
+  devices: [0, 1]
+
+  train_batch_size: 64
+  valid_batch_size: 8
+  num_workers: 16
+  
+
+  in_channels: 4
+  kernel_size: 3
+  hidden_channels: 128
+  n_blocks: 8
+  nr_mix: 10
+
+  train_folder_paths:
+    gt: data/ffhq/ffhq_imgs/ffhq_256
+    
+  valid_folder_paths:
+    gt: data/celeba/subsets/celeba_256
+
+  experiment_name: vlae_ffhq_256
+
+  ema_start: 0

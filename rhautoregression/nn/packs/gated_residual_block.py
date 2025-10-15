@@ -25,8 +25,8 @@ class GatedResidualBlock(nn.Module):
         self.aux_to_gate = nn.Conv2d(aux_channels, 2 * channels, kernel_size=1) if aux_channels > 0 else None
         self.out = nn.Conv2d(channels, channels, kernel_size=1)
 
-        nn.init.zeros_(self.out.lin.weight)
-        nn.init.zeros_(self.out.lin.bias)
+        nn.init.zeros_(self.out.weight)
+        nn.init.zeros_(self.out.bias)
 
     def forward(self, x: torch.Tensor, aux: Optional[torch.Tensor] = None) -> torch.Tensor:
         h = self.act(x)

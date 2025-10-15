@@ -1,0 +1,52 @@
+_import: configs/train_base_ar_discrete.yaml
+
+boat:
+  path: 'rhautoregression.boats.codebook_autoregression_boat'
+  name: 'CodebookAutoregressionBoat'
+
+  models:
+    net:
+      path: 'rhautoregression.nn.model_zoo.pixelcnn'
+      name: 'PixelCNN'
+      params:
+        vocab_size: $vocab_size
+        kernel_size: $kernel_size
+        in_channels: $in_channels
+        hidden_channels: $hidden_channels
+
+    latent_encoder:
+      path: 'rhcompression.nn.wrappers.autoencoder_kl_wrapper'   # Path to import the model class
+      name: 'AutoencoderKLWrapper'              # Name of the model class to use
+      pretrained: 'stabilityai/sd-vae-ft-mse'  # Example: A common pretrained VAE from Stable Diffusion
+
+    vector_quantizer:
+      path: 'rhcompression.nn.pixel_vector_quantizer'
+      name: 'PixelVectorQuantizer'
+      params:
+        num_codes: $vocab_size
+        dim: 4
+        eps: 1e-5
+        pretrained: 'pretrained/pixel_vq_model_d4k_ffhq256.pt'
+    
+_vars:
+
+  devices: [0, 1]
+
+  train_batch_size: 64
+  valid_batch_size: 8
+  num_workers: 16
+
+  vocab_size: 4096
+  in_channels: 1
+  kernel_size: 9
+  hidden_channels: 192
+
+  train_folder_paths:
+    gt: data/ffhq/ffhq_imgs/ffhq_256
+    
+  valid_folder_paths:
+    gt: data/celeba/subsets/celeba_256
+
+  experiment_name: code_pixelcnn_ffhq_256
+
+  ema_start: 0

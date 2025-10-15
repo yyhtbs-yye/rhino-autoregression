@@ -1,5 +1,4 @@
 import math
-from typing import Optional
 import torch
 import torch.nn.functional as F
 
@@ -7,16 +6,13 @@ from rhautoregression.nn.utils.sample_from_discretized_mix_logistic import _spli
 
 class DMOLNLLoss(torch.nn.Module):
     """Discretized Mixture of Logistics (DMOL) negative log-likelihood loss. """
-    def __init__(self, nr_mix: int, in_channels: int, reduction: Optional[str] = "mean"):
+    def __init__(self, nr_mix, in_channels, reduction="mean"):
         super().__init__()
         self.nr_mix = nr_mix
         self.in_channels = in_channels
         self.reduction = reduction
 
-    def forward(self, data) -> torch.Tensor:
-
-        x = data['targets']
-        params = data['preds']
+    def forward(self, x, params):
 
         return discretized_mix_logistic_loss(
             x, params, self.nr_mix, self.in_channels, self.reduction
@@ -26,14 +22,14 @@ class DMOLNLLoss(torch.nn.Module):
 # DMOL negative log-likelihood
 # -----------------------------
 def discretized_mix_logistic_loss(
-    x: torch.Tensor,
-    params: torch.Tensor,
-    nr_mix: int,
-    in_channels: int,
-    reduction: Optional[str] = "mean",
+    x,
+    params,
+    nr_mix,
+    in_channels,
+    reduction="mean",
     *,
-    coupled: bool = False,
-) -> torch.Tensor:
+    coupled=False,
+):
     """
     Discretized Mixture of Logistics (DMoL) NLL supporting arbitrary channels.
 

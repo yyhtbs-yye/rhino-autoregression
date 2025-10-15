@@ -50,15 +50,12 @@ class PixelCNNPPBackbone(nn.Module):
             self.skip_convs.append(nn.Conv2d(hidden_channels, hidden_channels, kernel_size=1))
 
     def forward(self, x):
-        """
-        """
         v = self.v_init(x)
         h = self.h_init(x)
-        skip = 0.0
-
+        skip = None
         for v_block, to_h, h_block, skip_conv in zip(self.v_blocks, self.v_to_h, self.h_blocks, self.skip_convs):
             v = v_block(v)
             h = h_block(h, aux=to_h(v))
-            skip = skip + skip_conv(h)
-            
-        return h
+            s = skip_conv(h)
+            skip = s if skip is None else skip + s
+        return skip
