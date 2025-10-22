@@ -52,7 +52,7 @@ class CodebookAutoregressionBoat(BaseAutoregressionBoat):
 
         return losses
 
-    def validation_step(self, batch, batch_idx):
+    def validation_step(self, batch, batch_idx, epoch):
         """
         Report metrics in data space: encode -> (optional) VQ (for logging) -> predict from zeros -> decode -> metrics.
         """

@@ -37,10 +37,13 @@ trainer:
   val_check_epochs: 1
   state_save_epochs: 1
 
-validation: 
+visualization:
   save_images: true
+  first_batch_only: true
+  wnb: [0.5, 0.5]  # for visualization
   num_vis_samples: 4
-  use_reference: true
+
+validation: 
   target_metric_name: 'dummy_metric'
   metrics:
     dummy_metric:
