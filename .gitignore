@@ -36,3 +36,4 @@ data
 *.json
 rhcore
 rhtrain
+rhcompression
